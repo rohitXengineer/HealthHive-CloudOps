@@ -1,0 +1,182 @@
+/* ===== General Body ===== */
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  margin: 0;
+  padding: 0;
+  color: #2c3e50;
+}
+
+/* ===== App Title ===== */
+h1 {
+  color: #1a237e;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ===== Main Container ===== */
+.container {
+  max-width: 950px;
+  margin: 30px auto;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+/* ===== Form Styling ===== */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+input, textarea {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px;
+  border: 2px solid #b0bec5;
+  border-radius: 10px;
+  background: #fefefe;
+  font-size: 14px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus, textarea:focus {
+  border: 2px solid #42a5f5;
+  box-shadow: 0 0 8px rgba(66, 165, 245, 0.6);
+  outline: none;
+}
+
+textarea {
+  resize: none;
+  flex-basis: 100%;
+  height: 90px;
+}
+
+/* ===== Primary Buttons ===== */
+button {
+  background: linear-gradient(90deg, #42a5f5, #5c6bc0);
+  color: white;
+  padding: 12px 18px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: transform 0.2s, background 0.3s;
+  font-weight: 600;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #1e88e5, #3949ab);
+  transform: translateY(-2px);
+}
+
+/* ===== Data Table ===== */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  margin-top: 20px;
+}
+
+table th {
+  background: #3949ab;
+  color: white;
+  padding: 14px;
+  border-radius: 8px 8px 0 0;
+  text-align: left;
+}
+
+table td {
+  background: #ffffff;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+}
+
+table tr {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+table tr:hover td {
+  background-color: #f1f8ff;
+}
+
+/* ===== Action Buttons ===== */
+.table-actions button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+.delete-btn {
+  background-color: #ef5350;
+  color: white;
+}
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+.edit-btn {
+  background-color: #26a69a;
+  color: white;
+}
+.edit-btn:hover {
+  background-color: #00796b;
+}
+
+/* ===== Dashboard Stats (if you add) ===== */
+.dashboard {
+  display: flex;
+  justify-content: space-around;
+  background: #f1f8ff;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 25px 0;
+  color: #1a237e;
+  font-weight: 600;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: linear-gradient(90deg, #3949ab, #5c6bc0);
+  color: white;
+  margin-top: 30px;
+  border-radius: 12px 12px 0 0;
+}
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* main content grows to fill space */
+}
+
+footer {
+  text-align: center;
+  padding: 15px;
+  background: linear-gradient(90deg, #3949ab, #5c6bc0);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
