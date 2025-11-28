@@ -1,0 +1,63 @@
+---
+- name: HealthHive Frontend Health Check and Rollback
+  hosts: webservers
+  tasks:
+    - name: Check if container is running
+      docker_container_info:
+        name: "{{ container_name }}"
+      register: container_state
+
+    - name: Get container logs for debugging
+      command: docker logs {{ container_name }}
+      register: container_logs
+      when: container_state.exists
+
+    - name: Display logs
+      debug:
+        msg: "{{ container_logs.stdout }}"
+      when: container_state.exists
+
+    - name: Health check - HTTP GET
+      uri:
+        url: "http://localhost:{{ host_port }}/"
+        method: GET
+        status_code: 200
+      register: health_check
+      retries: 3
+      delay: 5
+      ignore_errors: yes
+
+    - name: Set health check result
+      set_fact:
+        deployment_healthy: "{{ health_check is succeeded }}"
+
+    - name: Alert if deployment is unhealthy
+      debug:
+        msg: "WARNING: Deployment health check FAILED. Container may not be responding correctly."
+      when: not deployment_healthy
+
+    - name: Rollback to previous image on failure
+      block:
+        - name: Stop failed container
+          docker_container:
+            name: "{{ container_name }}"
+            state: stopped
+
+        - name: Remove failed container
+          docker_container:
+            name: "{{ container_name }}"
+            state: absent
+
+        - name: Deploy previous stable version
+          docker_container:
+            name: "{{ container_name }}"
+            image: "{{ docker_image }}:stable"
+            state: started
+            restart_policy: always
+            ports:
+              - "{{ host_port }}:{{ container_port }}"
+
+        - name: Verify rollback
+          debug:
+            msg: "Rolled back to stable version: {{ docker_image }}:stable"
+      when: not deployment_healthy

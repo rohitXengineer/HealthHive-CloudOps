@@ -1,0 +1,67 @@
+---
+- name: Deploy HealthHive Frontend
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Start Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add user to docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: Log in to Docker Hub
+      docker_login:
+        username: "{{ docker_username }}"
+        password: "{{ docker_password }}"
+        state: present
+
+    - name: Pull latest Docker image
+      docker_image:
+        name: "{{ docker_image }}"
+        source: pull
+        state: present
+
+    - name: Stop existing container if running
+      docker_container:
+        name: "{{ container_name }}"
+        state: stopped
+      ignore_errors: yes
+
+    - name: Remove existing container
+      docker_container:
+        name: "{{ container_name }}"
+        state: absent
+      ignore_errors: yes
+
+    - name: Deploy frontend container
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_image }}"
+        state: started
+        restart_policy: always
+        ports:
+          - "{{ host_port }}:{{ container_port }}"
+        env:
+          NODE_ENV: production
+
+    - name: Verify container is running
+      docker_container_info:
+        name: "{{ container_name }}"
+      register: result
+
+    - name: Display container status
+      debug:
+        msg: "Container {{ container_name }} is {{ result.container.State.Status }}"
